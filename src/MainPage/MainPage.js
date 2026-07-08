@@ -89,8 +89,7 @@ export default function PhoneList() {
       phones.filter(
         (phone) =>
           phone.CompanyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          phone.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          phone.price.toLowerCase().includes(searchTerm.toLowerCase()),
+          phone.model.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
     );
   };
