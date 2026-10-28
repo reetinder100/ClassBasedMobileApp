@@ -1,21 +1,12 @@
-import React, { useContext } from "react";
+import React, { Component } from "react";
 import { Button1, Cart, Iconbuttons, Layout, Button2 } from "./styling";
-import { ModalDataContext } from "./MainPage";
 import { CartSummary } from "./styling";
+import { ModalDataContext } from "./ModaldataContext";
 
-export const Cartfunc = () => {
-  const {
-    selectedModel,
-    selectedNumber,
-    totalproducts,
-    buttonTextValue,
-    handleSelect,
-    add,
-    sub,
-    cartItems,
-  } = useContext(ModalDataContext);
-
-  const totalPrice = () => {
+export class Cartfunc extends Component {
+  static contextType = ModalDataContext;
+  totalPrice = () => {
+    const { selectedModel, selectedNumber } = this.context;
     let price = 0;
 
     for (let i = 0; i < selectedModel.length; i++) {
@@ -25,13 +16,26 @@ export const Cartfunc = () => {
     return price;
   };
 
-  if (selectedModel.length == 0) {
-    return (
-      <Cart>
-        <h1>No items in cart</h1>
-      </Cart>
-    );
-  } else
+  render() {
+    const {
+      selectedModel,
+      selectedNumber,
+      totalproducts,
+      buttonTextValue,
+      handleSelect,
+      add,
+      sub,
+      cartItems,
+    } = this.context;
+
+    if (selectedModel.length === 0) {
+      return (
+        <Cart>
+          <h1>No items in cart</h1>
+        </Cart>
+      );
+    }
+
     return (
       <div>
         <Cart>
@@ -80,7 +84,7 @@ export const Cartfunc = () => {
           <h2>Order Summary</h2>
           <div className="row">
             <span>Subtotal ({totalproducts})</span>
-            <span>Rs {totalPrice()}</span>
+            <span>Rs {this.totalPrice()}</span>
           </div>
           <div className="row">
             <span>Shipping</span>
@@ -92,9 +96,10 @@ export const Cartfunc = () => {
           </div>
           <div className="row total">
             <span>Total</span>
-            <span>Rs {totalPrice()}</span>
+            <span>Rs {this.totalPrice()}</span>
           </div>
         </CartSummary>
       </div>
     );
-};
+  }
+}

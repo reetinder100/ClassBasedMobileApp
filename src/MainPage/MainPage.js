@@ -1,154 +1,177 @@
-import React from "react";
-import { createContext } from "react";
-import { useState } from "react";
+import React, { Component } from "react";
 import { PhoneCard, PhoneDetail, Button1, PhoneImage } from "./styling";
 import { Button2 } from "./styling";
 import { Layout } from "./styling";
 import { Container } from "./styling";
-import { Cart } from "./styling";
 import { Cartfunc } from "./Cart";
 import { Header } from "./Header";
 import { phones } from "./data";
 import Footer from "./footer";
+import { ModalDataContext } from "./ModaldataContext";
 
-export const ModalDataContext = createContext(null);
-
-export default function PhoneList() {
-  const [selectedModel, setSelectedModel] = useState([]);
-  const [selectedNumber, setselectedNumber] = useState({});
-  const [showCart, setshowCart] = useState(false);
-  const [text, settext] = useState("Add to Cart");
-  const [cartItems, setcartItems] = useState({});
-  const [filteredlist, setfilteredlist] = useState(phones);
-  const [totalproducts, settotalproducts] = useState(0);
-
-  const add = (phone) => {
-    if (cartItems[phone.model]) {
-      setselectedNumber((prev) => ({
-        ...prev,
-        [phone.model]: (prev[phone.model] || 1) + 1,
-      }));
-    }
-    settotalproducts(totalproducts + 1);
+export default class PhoneList extends Component {
+  state = {
+    selectedModel: [],
+    selectedNumber: {},
+    showCart: false,
+    cartItems: {},
+    filteredlist: phones,
+    totalproducts: 0,
   };
 
-  const sub = (phone) => {
-    if (cartItems[phone.model]) {
-      setselectedNumber((prev) => ({
-        ...prev,
-        [phone.model]: (prev[phone.model] || 1) - 1,
-      }));
-    }
-    settotalproducts(totalproducts - 1);
-  };
+  add = (phone) => {
+    const { cartItems, selectedNumber, totalproducts } = this.state;
 
-  const handleSelect = (phone) => {
-    if (buttonTextValue(phone) == "Add to Cart") {
-      setSelectedModel((prev) => {
-        return [...prev, phone];
+    if (cartItems[phone.model]) {
+      this.setState({
+        selectedNumber: {
+          ...selectedNumber,
+          [phone.model]: (selectedNumber[phone.model] || 1) + 1,
+        },
       });
-      settotalproducts(totalproducts + 1);
-    } else if (buttonTextValue(phone) == "Remove from cart") {
-      setSelectedModel((prev) =>
-        prev.filter((item) => item.model !== phone.model),
-      );
+    }
+    this.setState({ totalproducts: totalproducts + 1 });
+  };
 
-      setselectedNumber((prev) => ({
-        ...prev,
-        [phone.model]: 1,
+  sub = (phone) => {
+    const { cartItems, selectedNumber, totalproducts } = this.state;
+
+    if (cartItems[phone.model]) {
+      this.setState({
+        selectedNumber: {
+          ...selectedNumber,
+          [phone.model]: (selectedNumber[phone.model] || 1) - 1,
+        },
+      });
+    }
+    this.setState({ totalproducts: totalproducts - 1 });
+  };
+
+  handleSelect = (phone) => {
+    const { selectedNumber, cartItems, totalproducts } = this.state;
+    const text = this.buttonTextValue(phone);
+
+    if (text === "Add to Cart") {
+      this.setState((prevState) => ({
+        selectedModel: [...prevState.selectedModel, phone],
+        totalproducts: prevState.totalproducts + 1,
       }));
-      settotalproducts(totalproducts - (selectedNumber[phone.model] || 1));
+    } else if (text === "Remove from cart") {
+      this.setState((prevState) => ({
+        selectedModel: prevState.selectedModel.filter(
+          (item) => item.model !== phone.model,
+        ),
+        selectedNumber: {
+          ...prevState.selectedNumber,
+          [phone.model]: 1,
+        },
+        totalproducts:
+          prevState.totalproducts -
+          (prevState.selectedNumber[phone.model] || 1),
+      }));
     }
 
-    setcartItems((prev) => {
-      if (prev[phone.model]) return { ...prev, [phone.model]: false };
-      else {
-        return { ...prev, [phone.model]: true };
+    this.setState((prevState) => {
+      if (prevState.cartItems[phone.model]) {
+        return { cartItems: { ...prevState.cartItems, [phone.model]: false } };
+      } else {
+        return { cartItems: { ...prevState.cartItems, [phone.model]: true } };
       }
     });
   };
 
-  const buttonTextValue = (val) => {
-    if (cartItems[val.model]) {
+  buttonTextValue = (val) => {
+    if (this.state.cartItems[val.model]) {
       return "Remove from cart";
     } else {
       return "Add to Cart";
     }
   };
 
-  const handlecart = () => {
-    setshowCart(true);
+  handlecart = () => {
+    this.setState({ showCart: true });
   };
 
-  const handleback = () => {
-    setshowCart(false);
+  handleback = () => {
+    this.setState({ showCart: false });
   };
 
-  const handlesearch = (searchTerm) => {
-    setfilteredlist(
-      phones.filter(
+  handlesearch = (searchTerm) => {
+    this.setState({
+      filteredlist: phones.filter(
         (phone) =>
           phone.CompanyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           phone.model.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
-    );
+    });
   };
 
-  return (
-    <div>
-      <ModalDataContext.Provider
-        value={{
-          selectedModel,
-          selectedNumber,
-          totalproducts,
-          buttonTextValue,
-          handleSelect,
-          add,
-          sub,
-          cartItems,
-        }}
-      >
-        <Header
-          showCart={handlecart}
-          back={handleback}
-          onsearch={handlesearch}
-        ></Header>
+  render() {
+    const {
+      selectedModel,
+      selectedNumber,
+      totalproducts,
+      showCart,
+      cartItems,
+      filteredlist,
+    } = this.state;
 
-        {showCart && <Cartfunc />}
+    return (
+      <div>
+        <ModalDataContext.Provider
+          value={{
+            selectedModel,
+            selectedNumber,
+            totalproducts,
+            buttonTextValue: this.buttonTextValue,
+            handleSelect: this.handleSelect,
+            add: this.add,
+            sub: this.sub,
+            cartItems,
+          }}
+        >
+          <Header
+            showCart={this.handlecart}
+            back={this.handleback}
+            onsearch={this.handlesearch}
+          ></Header>
 
-        {!showCart && (
-          <Container>
-            {filteredlist.map((phone) => (
-              <PhoneCard>
-                <PhoneImage src={phone.image} />
+          {showCart && <Cartfunc />}
 
-                <PhoneDetail>Company: {phone.CompanyName}</PhoneDetail>
-                <PhoneDetail>Model: {phone.model}</PhoneDetail>
-                <PhoneDetail>Price: {phone.price}</PhoneDetail>
+          {!showCart && (
+            <Container>
+              {filteredlist.map((phone) => (
+                <PhoneCard key={phone.model}>
+                  <PhoneImage src={phone.image} />
 
-                <Layout>
-                  <Button1 onClick={() => handleSelect(phone)}>
-                    {buttonTextValue(phone)}
-                  </Button1>
-                  <Button2
-                    onClick={() => sub(phone)}
-                    disabled={!cartItems[phone.model]}
-                  >
-                    -
-                  </Button2>
-                  <Button2
-                    onClick={() => add(phone)}
-                    disabled={!cartItems[phone.model]}
-                  >
-                    +
-                  </Button2>
-                </Layout>
-              </PhoneCard>
-            ))}
-          </Container>
-        )}
-      </ModalDataContext.Provider>
-      <Footer />
-    </div>
-  );
+                  <PhoneDetail>Company: {phone.CompanyName}</PhoneDetail>
+                  <PhoneDetail>Model: {phone.model}</PhoneDetail>
+                  <PhoneDetail>Price: {phone.price}</PhoneDetail>
+
+                  <Layout>
+                    <Button1 onClick={() => this.handleSelect(phone)}>
+                      {this.buttonTextValue(phone)}
+                    </Button1>
+                    <Button2
+                      onClick={() => this.sub(phone)}
+                      disabled={!cartItems[phone.model]}
+                    >
+                      -
+                    </Button2>
+                    <Button2
+                      onClick={() => this.add(phone)}
+                      disabled={!cartItems[phone.model]}
+                    >
+                      +
+                    </Button2>
+                  </Layout>
+                </PhoneCard>
+              ))}
+            </Container>
+          )}
+        </ModalDataContext.Provider>
+        <Footer />
+      </div>
+    );
+  }
 }

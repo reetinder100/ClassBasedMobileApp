@@ -1,32 +1,42 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 
 import { Iconbuttons } from "./styling";
 import { HeaderStyle } from "./styling";
 import { SearchInput } from "./styling";
 
-export const Header = ({ showCart, back, onsearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+export class Header extends Component {
+  state = {
+    searchTerm: "",
+  };
 
-  return (
-    <HeaderStyle>
-      <h1>MobileSoft</h1>
+  handleChange = (e) => {
+    const value = e.target.value;
+    this.setState({ searchTerm: value });
+    this.props.onsearch(value);
+  };
 
-      <SearchInput
-        type="text"
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-          onsearch(searchTerm);
-        }}
-      />
+  render() {
+    const { showCart, back } = this.props;
+    const { searchTerm } = this.state;
 
-      <Iconbuttons>
-        <button onClick={showCart}>
-          <img src="shopping-cart.png" alt="image" width="50" height="50" />
-        </button>
-        <button onClick={back}>back</button>
-      </Iconbuttons>
-    </HeaderStyle>
-  );
-};
+    return (
+      <HeaderStyle>
+        <h1>MobileSoft</h1>
+
+        <SearchInput
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={this.handleChange}
+        />
+
+        <Iconbuttons>
+          <button onClick={showCart}>
+            <img src="shopping-cart.png" alt="image" width="50" height="50" />
+          </button>
+          <button onClick={back}>back</button>
+        </Iconbuttons>
+      </HeaderStyle>
+    );
+  }
+}
