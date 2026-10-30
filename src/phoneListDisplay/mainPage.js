@@ -5,8 +5,8 @@ import { Layout } from "../styling";
 import { Container } from "../styling";
 import { Cartfunc } from "../cart/cart";
 import { Header } from "../header";
-import { phones } from "../data";
-import Footer from "../footer";
+import { phones } from "../data/data";
+import Footer from "../headerAndFooter/footer";
 import { ModalDataContext } from "../modaldataContext";
 
 export default class PhoneList extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { FooterContainer } from "./styling";
-import { FooterLinks } from "./styling";
+import { FooterContainer } from "../styling";
+import { FooterLinks } from "../styling";
 
 class Footer extends Component {
   render() {
