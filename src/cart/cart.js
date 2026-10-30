@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button1, Cart, Iconbuttons, Layout, Button2 } from "./styling";
-import { CartSummary } from "./styling";
-import { ModalDataContext } from "./ModaldataContext";
+import { Button1, Cart, Iconbuttons, Layout, Button2 } from "../styling";
+import { CartSummary } from "../styling";
+import { ModalDataContext } from "../modaldataContext";
 
 export class Cartfunc extends Component {
   static contextType = ModalDataContext;

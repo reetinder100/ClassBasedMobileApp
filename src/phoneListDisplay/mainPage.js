@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { PhoneCard, PhoneDetail, Button1, PhoneImage } from "./styling";
-import { Button2 } from "./styling";
-import { Layout } from "./styling";
-import { Container } from "./styling";
-import { Cartfunc } from "./Cart";
-import { Header } from "./Header";
-import { phones } from "./data";
-import Footer from "./footer";
-import { ModalDataContext } from "./ModaldataContext";
+import { PhoneCard, PhoneDetail, Button1, PhoneImage } from "../styling";
+import { Button2 } from "../styling";
+import { Layout } from "../styling";
+import { Container } from "../styling";
+import { Cartfunc } from "../cart/cart";
+import { Header } from "../header";
+import { phones } from "../data";
+import Footer from "../footer";
+import { ModalDataContext } from "../modaldataContext";
 
 export default class PhoneList extends Component {
   state = {
