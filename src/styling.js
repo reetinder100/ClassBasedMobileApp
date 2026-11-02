@@ -68,6 +68,14 @@ export const Button2 = styled.button`
 export const Layout = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+
+  > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 `;
 
 export const Cart = styled.div`
@@ -220,4 +228,18 @@ export const FooterLinks = styled.div`
       color: #667eea;
     }
   }
+`;
+
+export const Stepper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const QtyDisplay = styled.span`
+  min-width: 2ch;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
 `;

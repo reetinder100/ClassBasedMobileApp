@@ -1,22 +1,33 @@
 import React from "react";
 import { Button2 } from "../styling";
 
+import { Stepper, QtyDisplay } from "../styling";
+
 const QuantityButtons = ({
   onAdd,
   onSub,
-  disabled = false,
+  disableAdd = false,
+  disableSub = false,
   quantity,
   showQuantity = false,
 }) => (
-  <>
-    <Button2 onClick={onSub} disabled={disabled}>
-      -
+  <Stepper>
+    <Button2
+      onClick={onSub}
+      disabled={disableSub}
+      aria-label="Decrease quantity"
+    >
+      −
     </Button2>
-    {showQuantity && <span>{quantity}</span>}
-    <Button2 onClick={onAdd} disabled={disabled}>
+    {showQuantity && <QtyDisplay>{quantity}</QtyDisplay>}
+    <Button2
+      onClick={onAdd}
+      disabled={disableAdd}
+      aria-label="Increase quantity"
+    >
       +
     </Button2>
-  </>
+  </Stepper>
 );
 
 export default QuantityButtons;

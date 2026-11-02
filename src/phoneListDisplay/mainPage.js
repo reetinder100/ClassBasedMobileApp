@@ -84,7 +84,6 @@ const PhoneListInner = () => {
                     onSub={() => sub(phone)}
                     disabled={!cartItems[phone.model]}
                     quantity={selectedNumber[phone.model] || 0}
-                    showQuantity
                   />
                 </Layout>
               </PhoneCard>

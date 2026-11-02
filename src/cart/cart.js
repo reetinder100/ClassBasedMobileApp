@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import { Button1, Cart, Iconbuttons, Layout, Button2 } from "../styling";
-import { CartSummary } from "../styling";
+import { Button1, Cart, CartSummary, Layout } from "../styling";
 import { ModalDataContext } from "../modaldataContext";
+import QuantityButtons from "../component/addSubcomponent";
 
 export class Cartfunc extends Component {
   static contextType = ModalDataContext;
+
   totalPrice = () => {
     const { selectedModel, selectedNumber } = this.context;
     let price = 0;
 
     for (let i = 0; i < selectedModel.length; i++) {
       const quantity = selectedNumber[selectedModel[i].model] || 1;
-      price = price + selectedModel[i].price * quantity;
+      price += selectedModel[i].price * quantity;
     }
     return price;
   };
@@ -39,45 +40,43 @@ export class Cartfunc extends Component {
     return (
       <div>
         <Cart>
-          {selectedModel.map((phone) => (
-            <div
-              key={phone.model}
-              style={{
-                borderBottom: "1px solid #eee",
-                padding: "15px 0",
-                marginBottom: "10px",
-              }}
-            >
-              <h1>
-                {phone.model} ({selectedNumber[phone.model] || 1})
-              </h1>
-              <p>Company: {phone.CompanyName}</p>
-              <p>Model: {phone.model}</p>
-              <p>Price: Rs {phone.price}</p>
+          {selectedModel.map((phone) => {
+            const qty = selectedNumber[phone.model] ?? 1;
+            const inCart = !!cartItems[phone.model];
 
-              <Layout>
-                <Button1 onClick={() => handleSelect(phone)}>
-                  {buttonTextValue(phone)}
-                </Button1>
+            return (
+              <div
+                key={phone.model}
+                style={{
+                  borderBottom: "1px solid #eee",
+                  padding: "15px 0",
+                  marginBottom: "10px",
+                }}
+              >
+                <h1>
+                  {phone.model} ({qty})
+                </h1>
+                <p>Company: {phone.CompanyName}</p>
+                <p>Model: {phone.model}</p>
+                <p>Price: Rs {phone.price}</p>
 
-                <Button2
-                  onClick={() => sub(phone)}
-                  disabled={
-                    selectedNumber[phone.model] <= 1 || !cartItems[phone.model]
-                  }
-                >
-                  -
-                </Button2>
+                <Layout>
+                  <Button1 onClick={() => handleSelect(phone)}>
+                    {buttonTextValue(phone)}
+                  </Button1>
 
-                <Button2
-                  onClick={() => add(phone)}
-                  disabled={!cartItems[phone.model]}
-                >
-                  +
-                </Button2>
-              </Layout>
-            </div>
-          ))}
+                  <QuantityButtons
+                    onAdd={() => add(phone)}
+                    onSub={() => sub(phone)}
+                    disableAdd={!inCart}
+                    disableSub={qty <= 1 || !inCart}
+                    quantity={qty}
+                    showQuantity
+                  />
+                </Layout>
+              </div>
+            );
+          })}
         </Cart>
 
         <CartSummary>
