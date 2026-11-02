@@ -1,5 +1,5 @@
 import "./App.css";
-import PhoneList from "./MainPage/MainPage";
+import PhoneList from "./phoneListDisplay/mainPage";
 
 function App() {
   return (

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import { Iconbuttons } from "./styling";
-import { HeaderStyle } from "./styling";
-import { SearchInput } from "./styling";
+import { Iconbuttons } from "../styling";
+import { HeaderStyle } from "../styling";
+import { SearchInput } from "../styling";
 
 export class Header extends Component {
   state = {
