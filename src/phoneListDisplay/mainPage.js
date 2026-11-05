@@ -7,13 +7,13 @@ import {
   Layout,
   Container,
 } from "../styling";
-import { Cartfunc } from "../cart/cart";
-import { Header } from "../header/header";
+import { Cartfunc } from "../cart";
+import { Header } from "../header";
 import { phones } from "../data/data";
-import Footer from "../footer/footer";
+import { Footer } from "../footer";
 import { ModalDataContext } from "../modaldataContext";
-import QuantityButtons from "../component/addSubcomponent";
-import { useCart } from "../hooks/hook";
+import { QuantityButtons } from "../quantiyButtons";
+import { useCart } from "../hooks";
 
 const PhoneListInner = () => {
   const {

@@ -3,7 +3,7 @@ import { Button2 } from "../styling";
 
 import { Stepper, QtyDisplay } from "../styling";
 
-const QuantityButtons = ({
+export const QuantityButtons = ({
   onAdd,
   onSub,
   disableAdd = false,
@@ -29,5 +29,3 @@ const QuantityButtons = ({
     </Button2>
   </Stepper>
 );
-
-export default QuantityButtons;

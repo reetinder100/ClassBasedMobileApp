@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Footer from "../footer";
+import { Footer } from "../footer";
 
 test("renders the brand name", () => {
   render(<Footer />);

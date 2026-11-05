@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FooterContainer } from "../styling";
 import { FooterLinks } from "../styling";
 
-class Footer extends Component {
+export class Footer extends Component {
   render() {
     const { hasCart = false } = this.props;
 
@@ -23,5 +23,3 @@ class Footer extends Component {
     );
   }
 }
-
-export default Footer;
